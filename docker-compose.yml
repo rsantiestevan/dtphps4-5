@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-#    postgres:
-#        image: postgres:12.4-alpine
-#        restart: on-failure
-#        environment:
-#          POSTGRES_DB: ${DB_NAME}
-#          POSTGRES_USER: ${DB_USER}
-#          POSTGRES_PASSWORD: ${DB_PASSWORD}
-#          PGDAT: /var/lib/postgresql/data
-#        volumes:
-#            - ./db-data/postgres:/var/lib/postgresql/data:rw
-#        ports:
-#          - "5432:5432"
     mysql:
         image: mysql
         container_name: app_mysql
@@ -42,9 +30,8 @@ services:
             PHP_IDE_CONFIG: serverName=localhost
         depends_on:
             - mysql
-#            - postgres
         links:
-            - "mysql:mysql"
+            - "mysql:dbhost"
         volumes:
             -   ./src/${PROJECT_NAME}:/var/www/app:rw,cached
 
@@ -64,4 +51,4 @@ services:
         volumes:
             - ./src/${PROJECT_NAME}:/var/www/app
         ports:
-            - "8080:80"
+            - "1080:80"
