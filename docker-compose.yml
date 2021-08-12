@@ -4,6 +4,7 @@ services:
     mysql:
         image: mysql
         container_name: app_mysql
+        working_dir: /home
         restart: on-failure
         environment:
             MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
@@ -12,6 +13,7 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ./db-data/mysql:/var/lib/mysql:rw
+            - ./src/bkdata:/home/:rw
         ports:
             - "9906:3306"
     php:
