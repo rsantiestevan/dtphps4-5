@@ -46,9 +46,6 @@ COPY docker/php/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN set -eux; \
     composer self-update --2
-#RUN set -eux; \
-#	composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress --no-suggest --classmap-authoritative; \
-#	composer clear-cache
 
 # prevent the reinstallation of vendors at every changes in the source code
 #COPY composer.json composer.lock symfony.lock ./src
@@ -71,6 +68,6 @@ CMD ["php-fpm"]
 
 FROM nginx:${NGINX_VERSION}-alpine AS app_nginx
 
-COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+#COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
 #WORKDIR /var/www/app/public

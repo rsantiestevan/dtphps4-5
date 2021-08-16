@@ -5,6 +5,7 @@ services:
         image: mysql
         container_name: app_mysql
         working_dir: /home
+        command: --default-authentication-plugin=mysql_native_password
         restart: on-failure
         environment:
             MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
@@ -13,7 +14,8 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ./db-data/mysql:/var/lib/mysql:rw
-            - ./src/bkdata:/home/:rw
+            - ./init/mysql:/docker-entrypoint-initdb.d
+            - ./init/bkdata:/home/:rw
         ports:
             - "9906:3306"
     php:
@@ -22,7 +24,7 @@ services:
             target: app_php
         image: sf-docker/php:dev
         container_name: app_php
-        working_dir: /var/www/app
+        working_dir: /var/www
         restart: on-failure
         environment:
             APP_ENV: dev
@@ -36,6 +38,7 @@ services:
             - "mysql:dbhost"
         volumes:
             -   ./src/${PROJECT_NAME}:/var/www/app:rw,cached
+            -   ./src/${PROJECT_NAME2}:/var/www/app2:rw,cached
 
     nginx:
         build:
@@ -52,5 +55,8 @@ services:
             - php
         volumes:
             - ./src/${PROJECT_NAME}:/var/www/app
+            - ./src/${PROJECT_NAME}:/var/www/app2
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
         ports:
             - "1080:80"
+            - "1081:81"
