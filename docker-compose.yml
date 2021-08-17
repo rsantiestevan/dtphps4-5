@@ -14,8 +14,8 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ./db-data/mysql:/var/lib/mysql:rw
+            - ./db-data/bkdata:/home/:rw
             - ./init/mysql:/docker-entrypoint-initdb.d
-            - ./init/bkdata:/home/:rw
         ports:
             - "9906:3306"
     php:
